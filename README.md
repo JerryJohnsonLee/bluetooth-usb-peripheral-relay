@@ -1,10 +1,10 @@
 # Bluetooth USB HID Relay
 
-### A delightfully over-engineered solution to an unusual modern problem! 
+### A delightfully over-engineered solution to an unusual modern problem!
+
 Use Bluetooth peripherals with Bluetooth-disabled computers.
 
 ![Bluetooth USB HID Relay Overview](./assets/bluetooth-usb-peripheral-relay-image.png)
-
 
 This project creates a Bluetooth USB HID relay using a Raspberry Pi Zero (or similar OTG-enabled single-board computer). It allows you to use Bluetooth keyboards and mice with computers that have Bluetooth disabled, by presenting the board as a composite USB HID device.
 
@@ -39,6 +39,7 @@ graph TD
 ## Requirements & Compatibility
 
 ### Hardware
+
 - **Tested on:** Raspberry Pi Zero W 2
 - **Should work on:** Any Single Board Computer (SBC) with USB OTG or USB host capabilities
 - **Key requirement:** Device must be able to act as a USB gadget
@@ -55,6 +56,7 @@ Before building and running the project, ensure you have the following installed
    sudo apt-get update
    sudo apt-get install golang
    ```
+
 2. Task runner using:
 
    ```bash
@@ -66,27 +68,28 @@ Before building and running the project, ensure you have the following installed
    ```bash
    go install github.com/go-task/task/v3/cmd/task@latest
    ```
-> Note: You may need to add $(go env GOPATH)/bin to your PATH environment variable with the second command.
 
+   > Note: You may need to add $(go env GOPATH)/bin to your PATH environment variable with the second command.
 
-## ⚠️ Caution
+## ⚠️ Note on Setup
 
 **Please read before proceeding:**
 
-This project is currently in an experimental state and has only been tested on a limited number of devices. While it works well for my use case, please be aware that:
+This project has been tested and works well on the Raspberry Pi Zero W 2, though it's still in development. While the setup process is straightforward, please note:
 
-- The scripts modify system-level configurations and USB settings
-- Incorrect USB gadget configuration could potentially require a fresh OS installation to recover
-- The project has only been tested on a small number of devices and configurations
-- This is a personal project, not production-ready software
+- The setup scripts will modify some Raspberry Pi system configurations (USB and Bluetooth settings)
+- If something goes wrong during USB gadget setup, you may need to reflash your Raspberry Pi's OS
+- The project has been tested primarily on Raspberry Pi Zero W 2 with DietPi OS
+- This is a community project built for learning and experimentation
 
-**Before running this project, you should:**
-- Only use it on devices where you can easily reinstall the OS if needed
-- Carefully review all scripts and code before execution
-- Have a backup plan in case something goes wrong
-- Be comfortable with Linux system administration and USB configurations
+**Before running this project:**
 
-I cannot guarantee this will work on all devices or configurations. Proceed at your own risk.
+- Make sure you have a backup of your Raspberry Pi's SD card if needed
+- Review the scripts to understand what system changes will be made
+- Be familiar with basic Raspberry Pi administration
+- Have a way to reflash your SD card if necessary
+
+While the setup process is generally safe, please proceed thoughtfully and feel free to ask questions if you're unsure about any step.
 
 ## Setup
 
@@ -102,12 +105,13 @@ I cannot guarantee this will work on all devices or configurations. Proceed at y
    sudo ./scripts/setup_gadgets.sh # create the gadget and configure the USB strings
    ```
 
-5. Pair your Bluetooth devices manually or using the script:
+4. Pair your Bluetooth devices manually or using the script:
+
    ```bash
    sudo ./scripts/pair_devices.sh
    ```
 
-4. Build and install the service:
+5. Build and install the service:
    ```bash
    task build
    sudo task service:install
@@ -122,6 +126,7 @@ Connect the board to the target computer via USB. This will turn the board on an
 This project uses Task runner for common operations:
 
 ### General tasks
+
 - `task --list` - List all available tasks
 - `task build` - Build the project
 - `task clean` - Clean build artifacts
@@ -131,6 +136,7 @@ This project uses Task runner for common operations:
 - `task simulate` - Run the simulate tool
 
 ### Service Management
+
 - `task service:install` - Install and enable the service
 - `task service:status` - Check service status
 - `task service:logs` - View service logs
@@ -150,6 +156,7 @@ task doctor
 ```
 
 ### Input Simulation
+
 To test the USB HID output without Bluetooth devices:
 
 ```bash
@@ -157,28 +164,30 @@ task simulate
 ```
 
 This interactive tool allows you to:
+
 1. Move the mouse in a circle pattern
 2. Type a test message
-These simulations help verify that the USB HID device is working correctly on the host computer.
+   These simulations help verify that the USB HID device is working correctly on the host computer.
 
 ### Uninstall and remove gadget
 
 To uninstall the service:
+
 ```bash
 task service:uninstall
 ```
 
 To remove the gadget and restore the USB host configuration:
+
 ```bash
 ./scripts/uninstall/undo_setup_gadgets.sh
 ./scripts/uninstall/undo_setup_usb_host.sh
 ```
 
-
-
 ## Development
 
 This project can be used as is or as basis for other types of USB gadgets. It can also serve as a learning opportunity for:
+
 - Linux internals
 - Creating USB gadgets
 - Using Go for hardware interfacing
@@ -197,6 +206,7 @@ Tested with DietPi 64bit as host and Windows 10 and MacOS USB clients to which t
 Found a bug or have a suggestion? Please feel free to create an issue on GitHub! I'm actively maintaining this project and would be happy to look into any problems or improvements you identify. While this is a personal project, I'm committed to helping others get it working and making it better.
 
 Your feedback and contributions help make this project more reliable for everyone! 💜
+
 ## References
 
 - [Adafruit Guide: Turning your Raspberry Pi Zero into a USB Gadget](https://cdn-learn.adafruit.com/downloads/pdf/turning-your-raspberry-pi-zero-into-a-usb-gadget.pdf)
